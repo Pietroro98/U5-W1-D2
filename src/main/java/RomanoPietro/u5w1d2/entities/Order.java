@@ -4,35 +4,53 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import java.time.LocalDateTime;
+
+import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 @Getter
 @Setter
 @ToString
 public class Order {
-    private int orderNumber;
-    private String status;
+    private int numeroOrdine;
+    private State state;
+    private int numCoperti;
+    private LocalTime oraAcquisizione;
+    private List<FoodItem> orderedProducts;
+    private Table table;
 
-    private int numberOfSeats;
-    private LocalDateTime acquisitionTime;
-    private List<FoodItem> items;
-    private double totalAmount;
-
-
-    public Order(int orderNumber, String status, int numberOfSeats,
-                 LocalDateTime acquisitionTime, List<FoodItem> items, double seatCost) {
-        this.orderNumber = orderNumber;
-        this.status = status;
-        this.numberOfSeats = numberOfSeats;
-        this.acquisitionTime = acquisitionTime;
-        this.items = items;
-        this.totalAmount = calculateTotalAmount(seatCost);
+    public Order(int numCoperti, Table table) {
+        Random rndm = new Random();
+        if (table.getNumMaxCoperti() <= numCoperti)
+            throw new RuntimeException("Numero coperti maggiore di numero massimo posti sul tavolo!");
+        this.numeroOrdine = rndm.nextInt(1000, 100000);
+        this.state = State.IN_CORSO;
+        this.numCoperti = numCoperti;
+        this.oraAcquisizione = LocalTime.now();
+        this.orderedProducts = new ArrayList<>();
+        this.table = table;
     }
 
-    private double calculateTotalAmount(double seatCost) {
-        double sum = items.stream().filter(java.util.Objects::nonNull).mapToDouble(FoodItem::getPrice).sum();
-        return sum + (seatCost * numberOfSeats);
+    public void addItem(FoodItem item) {
+        this.orderedProducts.add(item);
+    }
+
+    public double getTotal() {
+        return this.orderedProducts.stream().mapToDouble(FoodItem::getPrice).sum() + (this.table.getCostoCoperto() * this.numCoperti);
+    }
+
+    public void print() {
+        System.out.println("id ordine--> " + this.numeroOrdine);
+        System.out.println("stato--> " + this.state);
+        System.out.println("numero coperti--> " + this.numCoperti);
+        System.out.println("ora acquisizione--> " + this.oraAcquisizione);
+        System.out.println("numero tavolo--> " + this.table.getNumTable());
+        System.out.println("Lista: ");
+        this.orderedProducts.forEach(System.out::println);
+        System.out.println("totale--> " + this.getTotal());
+
     }
 }
 

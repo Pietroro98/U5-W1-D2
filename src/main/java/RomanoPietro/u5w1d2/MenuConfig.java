@@ -1,114 +1,168 @@
 package RomanoPietro.u5w1d2;
 
 
-import RomanoPietro.u5w1d2.entities.Drinks;
-import RomanoPietro.u5w1d2.entities.Menu;
-import RomanoPietro.u5w1d2.entities.Pizza;
-import RomanoPietro.u5w1d2.entities.Toppings;
+import RomanoPietro.u5w1d2.entities.*;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
+import org.springframework.context.annotation.PropertySource;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 
 @Configuration
+@PropertySource("application.properties")
 public class MenuConfig {
 
-    @Value("${seat.cost}")
-    private double seatCost;
+    @Value("${seat.price}")
+    private double seatPrice;
+
+
 
     //------------------Pizzas----------------------------
 
-    @Bean
-    @Qualifier("margheritaPizza")
-    public Pizza Margherita(){
-        return new Pizza("Margherita", 4.99, 1104, Arrays.asList("Tomato", "Cheese"), "xxl");
+    @Bean(name = "pizza_margherita")
+    public Pizza pizzaMargheritaBean() {
+        List<Toppings> tList = new ArrayList<>();
+        tList.add(toppingTomatoBean());
+        tList.add(toppingCheeseBean());
+        return new Pizza("Pizza Margherita", tList, false);
     }
 
-    @Bean
-    @Qualifier("hawaiianPizza")
-    public Pizza hawaiian(){
-        return new Pizza("Hawaiian", 6.49, 1024, Arrays.asList("Tomato", "Cheese","Ham", "Pineapple"), "normal");
-    }
-    @Bean
-    @Qualifier("diavolaPizza")
-    public Pizza diavola(){
-        return new Pizza("Diavola", 5.99, 1160, Arrays.asList("Tomato", "Cheese", "Salame"), "normal");
+    @Bean(name = "hawaiian_pizza")
+    public Pizza pizzaHawaiianBean() {
+        List<Toppings> tList = new ArrayList<>();
+        tList.add(toppingTomatoBean());
+        tList.add(toppingCheeseBean());
+        tList.add(toppingHamBean());
+        tList.add(toppingPineappleBean());
+        return new Pizza("Hawaiian Pizza", tList, false);
     }
 
+    @Bean(name = "salami_pizza")
+    public Pizza pizzaSalamiBean() {
+        List<Toppings> tList = new ArrayList<>();
+        tList.add(toppingTomatoBean());
+        tList.add(toppingCheeseBean());
+        tList.add(toppingSalameBean());
+        return new Pizza("Salami Pizza", tList, false);
+    }
+
+    @Bean(name = "salami_pizza_xl")
+    public Pizza pizzaSalamiXlBean() {
+        List<Toppings> tList = new ArrayList<>();
+        tList.add(toppingTomatoBean());
+        tList.add(toppingCheeseBean());
+        tList.add(toppingSalameBean());
+        return new Pizza("Salami Pizza XL", tList, true);
+    }
 
 
     //------------------Toppings----------------------------
-    @Bean
-    @Qualifier("cheeseToppings")
-    public Toppings cheese(){
-        return new Toppings("Cheese", 0.69, 92);
+
+    @Bean(name = "toppings_tomato")
+    public Toppings toppingTomatoBean() {
+        return new Toppings("Tomato", 0, 0);
     }
-    @Bean
-    @Qualifier("hamToppings")
-    public Toppings ham(){
-        return new Toppings("Ham", 0.99, 35);
+
+    @Bean(name = "toppings_cheese")
+    public Toppings toppingCheeseBean(){
+        return new Toppings("Cheese", 92, 0.69);
     }
-    @Bean
-    @Qualifier("onionsToppings")
-    public Toppings onions(){
-        return new Toppings("Onions", 0.69, 22);
+    @Bean(name = "toppings_ham")
+    public Toppings toppingHamBean(){
+        return new Toppings("Ham",35, 0.99);
     }
-    @Bean
-    @Qualifier("pineappleToppings")
-    public Toppings pineapple(){
-        return new Toppings("Pineapple", 0.79, 24);
+    @Bean(name = "toppings_onions")
+    public Toppings toppingOnionsBean(){
+        return new Toppings("Onions", 22, 0.69);
     }
-    @Bean
-    @Qualifier("salameToppings")
-    public Toppings Salame(){
-        return new Toppings("Salame", 0.99, 86);
+    @Bean(name = "toppings_pineapple")
+    public Toppings toppingPineappleBean(){
+        return new Toppings("Pineapple", 24, 0.79);
+    }
+    @Bean(name = "toppings_salame")
+    public Toppings toppingSalameBean(){
+        return new Toppings("Salame", 86, 0.99);
     }
 
 
     //------------------DRINKS----------------------------
-    @Bean
-    @Qualifier("cocaColaDrink")
+    @Bean(name = "cocaCola")
     public Drinks cocaCola(){
-        return new Drinks("cocaCola",2.50, 150, 0.33, 0);
+        return new Drinks("cocaCola", 150, 2.50);
     }
 
-    @Bean
-    @Qualifier("waterDrink")
-    public Drinks water(){
-        return new Drinks("Water",1.00, 0, 0.33, 0);
+    @Bean(name = "water")
+    public Drinks waterBean(){
+        return new Drinks("Water", 0, 1.00);
     }
 
-    @Bean
-    @Qualifier("lemonadeDrink")
-    public Drinks lemonade(){
-        return new Drinks("Lemonade",1.00, 128, 0.33, 0);
+    @Bean(name = "lemonade")
+    public Drinks lemonadeBean(){
+        return new Drinks("Lemonade", 128 ,1.00);
     }
 
-    @Bean
-    @Qualifier("beerDrink")
-    public Drinks beer(){
-        return new Drinks("Beer",5.00, 43, 0.66, 4.5);
+    @Bean(name = "beer")
+    public Drinks beerBean(){
+        return new Drinks("Beer", 43, 5.00);
     }
 
-    @Bean
-    @Qualifier("beer2Drink")
-    public Drinks getBeer2(){
-        return new Drinks("Beer2",5.00, 43, 0.66, 4.5);
+    @Bean(name = "wine")
+    public Drinks wineBean() {
+        return new Drinks("Wine", 607, 7.49);
     }
 
-    @Bean
-    @Primary
-    public Menu menu(){
-        return new Menu(
+   @Bean("pizzas")
+    List<Pizza> pizzaList() {
+        List<Pizza> pizzas = new ArrayList<>();
+        pizzas.add(pizzaMargheritaBean());
+        pizzas.add(pizzaHawaiianBean());
+        pizzas.add(pizzaSalamiBean());
+        pizzas.add(pizzaSalamiXlBean());
+        return pizzas;
+    }
 
-                Arrays.asList(Margherita(), hawaiian(), diavola()),
-                Arrays.asList(cheese(), ham(), onions(), pineapple(), Salame()),
-                Arrays.asList(cocaCola(), water(), lemonade(), beer())
-        );
+    @Bean("drinks")
+    List<Drinks> drinksList() {
+        List<Drinks> drinks = new ArrayList<>();
+        drinks.add(lemonadeBean());
+        drinks.add(waterBean());
+        drinks.add(wineBean());
+        drinks.add(cocaCola());
+        drinks.add(beerBean());
+        return drinks;
+    }
+
+    @Bean("toppings")
+    List<Toppings> toppingsList() {
+        List<Toppings> toppings = new ArrayList<>();
+        toppings.add(toppingTomatoBean());
+        toppings.add(toppingCheeseBean());
+        toppings.add(toppingSalameBean());
+        toppings.add(toppingHamBean());
+        toppings.add(toppingPineappleBean());
+        toppings.add(toppingOnionsBean());
+        return toppings;
+    }
+
+    @Bean("Tavolo1")
+   public  Table getTable1(@Value("${seat.price}") double seatPrice) {
+        return new Table(1, 5, true, seatPrice);
+    }
+
+    @Bean("Tavolo2")
+    public Table getTable2(@Value("${seat.price}") double seatPrice) {
+        return new Table(2, 4, true, seatPrice);
+    }
+
+    @Bean("Tavolo3")
+    public Table getTable3(@Value("${seat.price}") double seatPrice) {
+        return new Table(3, 8, true, seatPrice);
     }
 
 

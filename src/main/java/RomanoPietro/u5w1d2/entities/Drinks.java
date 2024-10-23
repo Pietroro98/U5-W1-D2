@@ -10,13 +10,10 @@ import lombok.ToString;
 @ToString
 
 public class Drinks extends FoodItem{
-    private double volume;
-    private double alcoholPercentage;
+    private String name;
 
-
-    public Drinks(String name, double price, int calories, double volume, double alcoholPercentage) {
-        super(name, price, calories);
-        this.volume = volume;
-        this.alcoholPercentage = alcoholPercentage;
+    public Drinks(String name, int calories, double price) {
+        super(calories, price);
+        this.name = name;
     }
 }

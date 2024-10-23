@@ -1,5 +1,4 @@
 package RomanoPietro.u5w1d2.entities;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -8,8 +7,12 @@ import lombok.ToString;
 @Getter
 @ToString
 public class Toppings extends FoodItem {
-    public Toppings(String name, double price, int calories) {
-        super(name, price, calories);
+    private String name;
+
+    public Toppings(String name, int calories, double price) {
+        super(calories, price);
+        this.name = name;
     }
+
 }
 

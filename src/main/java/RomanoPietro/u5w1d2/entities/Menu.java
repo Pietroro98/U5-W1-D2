@@ -1,77 +1,36 @@
 package RomanoPietro.u5w1d2.entities;
 
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 @Getter
-@Setter
-
+@ToString
+@AllArgsConstructor
 @Component
 public class Menu {
-    private List<Pizza> pizzas;
-    private List<Toppings> toppings;
-    private List<Drinks> drinks;
+    private List<Pizza> pizzaList;
+    private List<Toppings> toppingList;
+    private List<Drinks> drinkList;
 
-    public Menu(List<Pizza> pizzas, List<Toppings> toppings, List<Drinks> drinks) {
-        this.pizzas = pizzas;
-        this.toppings = toppings;
-        this.drinks = drinks;
-    }
+    public void printMenu() {
+        System.out.println("******* Menu *******");
+        System.out.println("PIZZAS");
+        this.pizzaList.forEach(System.out::println);
+        System.out.println();
 
+        System.out.println("TOPPINGS");
+        this.toppingList.forEach(System.out::println);
+        System.out.println();
 
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
+        System.out.println("DRINKS");
+        this.drinkList.forEach(System.out::println);
+        System.out.println();
 
-
-        sb.append("Menu:\n");
-
-
-        sb.append(String.format("%-20s %-20s %-10s\n", "Pizzas", "Calories", "Price"));
-
-
-        for (Pizza pizza : pizzas) {
-            sb.append(String.format("%-20s %-20s %-10s\n",
-                    pizza.getName(),
-                    pizza.getCalories(),
-                    pizza.getPrice()
-            ));
-        }
-
-        sb.append("\n");
-
-
-        sb.append(String.format("%-20s %-20s %-10s\n", "Toppings", "Calories", "Price"));
-
-
-        for (Toppings topping : toppings) {
-            sb.append(String.format("%-20s %-20s %-10s\n",
-                    topping.getName(),
-                    topping.getCalories(),
-                    topping.getPrice()
-            ));
-        }
-
-        sb.append("\n");
-
-        sb.append(String.format("%-20s %-20s %-10s\n", "Drinks", "Calories", "Price"));
-        for (Drinks drink : drinks) {
-            String alcoholPercentage = String.format("%.1f%%", drink.getAlcoholPercentage());
-            if (drink.getAlcoholPercentage() == 0) {
-                alcoholPercentage = "0%";
-            }
-
-            sb.append(String.format("%-20s %-20s %-10s\n",
-                    drink.getName() + String.format(" (%.2fL, %s)", drink.getVolume(), alcoholPercentage), // Nome con volume e percentuale di alcool
-                    drink.getCalories(),
-                    drink.getPrice()
-            ));
-        }
-
-        return sb.toString();
     }
 }
